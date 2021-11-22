@@ -13,6 +13,7 @@ import java.sql.Statement;
 /**
  *
  * @author adminBeka
+ * @author Liudmila Stolbetskaia
  */
 public class Crossover_CA {
 

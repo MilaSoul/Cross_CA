@@ -8,6 +8,7 @@ package crossover_ca;
 /**
  *
  * @author adminBeka
+ * @author Liudmila Stolbetskaia
  */
 public class RegularUser extends User implements Interface_Regular_User {
     

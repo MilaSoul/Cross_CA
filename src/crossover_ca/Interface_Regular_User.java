@@ -8,6 +8,7 @@ package crossover_ca;
 /**
  *
  * @author adminBeka
+ * @author Liudmila Stolbetskaia
  */
 public interface Interface_Regular_User {
     

@@ -8,6 +8,7 @@ package crossover_ca;
 /**
  *
  * @author adminBeka
+ * @author Liudmila Stolbetskaia
  */
 public class Admin extends User implements Interface_Admin {
     public Admin(int userID, String userName, String password, String userRole) {
