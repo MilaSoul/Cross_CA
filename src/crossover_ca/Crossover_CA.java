@@ -26,11 +26,12 @@ public class Crossover_CA {
         // TODO code application logic here
         try {
             
-            Class.forName("com.mysql.cl.jdbc.Driver").newInstance();
-            String dbServer = "jdbc:mysql://localhost:336/CA_Crossover";//Userstable will be the name of the SQLPtoject
+            Class.forName("com.mysql.cj.jdbc.Driver");
+           // Class.forName("com.mysql.jdbc.Driver");
+            String dbServer = "jdbc:mysql://localhost:3306/test-database";//Userstable will be the name of the SQLProject
             String user = "root";
-            String password = "";//to set password if needed
-            String query = "Select * FROM users";// user is the name of the SQLtable
+            String password = "root";//to set password if needed
+            String query = "SELECT * FROM people";// user is the name of the SQLtable
             
             // Get a connection to the database
             Connection conn = DriverManager.getConnection(dbServer, user, password);
@@ -41,12 +42,29 @@ public class Crossover_CA {
             // Execute the query
             ResultSet rs = stmt.executeQuery(query);
             
-             while(rs.next()) {
+           
+           
+        /*    Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test-database", "root", "root" );
+            
+            Statement stmt = connection.createStatement() ;
+            
+            // Execute the query
+            ResultSet rs = stmt.executeQuery("select * from people;"); */
+            
+            while(rs.next()){
+              //  System.out.println(rs.getString("firstname")); 
                 PrintStream var10000 = System.out;
-                String var10001 = rs.getString("id");
+                String var10001 = rs.getString("idpeople");
+                var10000.println(var10001 + "\t" + rs.getString("firstname"));
+           } 
+            
+            
+           /* while(rs.next()) {
+                PrintStream var10000 = System.out;
+                String var10001 = rs.getString("idpeople");
                 var10000.println(var10001 + "\t" + rs.getString("user_name") + "\t" + rs.getString("user_password") + 
                         "\t" + rs.getString("user_role") + "\t" + rs.getString( "idpersonal_info" ));
-            }
+            }*/
             // closening writing to the file 
                 rs.close();
                 stmt.close();
