@@ -15,5 +15,13 @@ public class RegularUser extends User implements Interface_Regular_User {
      public RegularUser(int userID, String userName, String password, String userRole) {
         super(userID, userName, password, userRole);
     }
+     public RegularUser(){
+        this(001,"beka", "blabla", "regularUser");
+         System.out.println("new Ruser");
+     };
+     
+     public void userBuilder(){
+         
+     }
     
 }

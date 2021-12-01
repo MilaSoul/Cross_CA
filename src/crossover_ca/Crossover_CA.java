@@ -11,6 +11,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  *
@@ -22,69 +24,32 @@ public class Crossover_CA {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         // TODO code application logic here
-        try {
-            
-            Class.forName("com.mysql.cj.jdbc.Driver");
-           // Class.forName("com.mysql.jdbc.Driver");
-            String dbServer = "jdbc:mysql://localhost:3306/test-database";//Userstable will be the name of the SQLProject
-            String user = "root";
-            String password = "root";//to set password if needed
-            String query = "SELECT * FROM people";// user is the name of the SQLtable
-            
-            // Get a connection to the database
-            Connection conn = DriverManager.getConnection(dbServer, user, password);
-            
-            // Get a statement from the connection
-            Statement stmt = conn.createStatement() ;
-            
-            // Execute the query
-            ResultSet rs = stmt.executeQuery(query);
-            
-           
-           
-        /*    Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test-database", "root", "root" );
-            
-            Statement stmt = connection.createStatement() ;
-            
-            // Execute the query
-            ResultSet rs = stmt.executeQuery("select * from people;"); */
-            
-            while(rs.next()){
-              //  System.out.println(rs.getString("firstname")); 
-                PrintStream var10000 = System.out;
-                String var10001 = rs.getString("idpeople");
-                var10000.println(var10001 + "\t" + rs.getString("firstname"));
-           } 
-            
-            
-           /* while(rs.next()) {
-                PrintStream var10000 = System.out;
-                String var10001 = rs.getString("idpeople");
-                var10000.println(var10001 + "\t" + rs.getString("user_name") + "\t" + rs.getString("user_password") + 
-                        "\t" + rs.getString("user_role") + "\t" + rs.getString( "idpersonal_info" ));
-            }*/
-            // closening writing to the file 
-                rs.close();
-                stmt.close();
-                conn.close();
-            
-            } catch (SQLException var8) {
-            SQLException se = var8;
-            System.out.println("SQL Exception:");
-
-            while(se != null) {
-                System.out.println("State  : " + se.getSQLState());
-                System.out.println("Message: " + se.getMessage());
-                System.out.println("Error  : " + se.getErrorCode());
-                se = se.getNextException();
-            }
-        } catch (Exception var9) {
-            System.out.println(var9);
+       
+        Table_Interaction usersDB = new Table_Interaction();
+        usersDB.connectToTheServer();
+        usersDB.showTheFullTable();
+        usersDB.tableUpdate("jefferson", 7);
+        usersDB.showTheFullTable();
+        usersDB.postTo_Table("INSERT INTO `ca_crossover`.`users`\n" +
+"(`user_name`,\n" + "`user_password`,\n" + "`user_role`\n)" +
+"VALUES\n" + "('michael',\n" + "'pass5',\n" + "'user');");
+        usersDB.showTheFullTable();
+        String passwordMila = usersDB.selectFromTable_Password("mila");
+        
+        
+    //    ArrayList<String> tableCopy = usersTS.getFromTable(query,"user_name", "user_password");
+  //      System.out.println(tableCopy + "" + tableCopy.size());
+        
+       /* String query2 = "INSERT INTO `ca_crossover`.`users`\n" +
+"(`user_name`,\n" + "`user_password`,\n" + "`user_role`\n)" +
+"VALUES\n" + "('aldana',\n" + "'pass3',\n" + "'user);";// поставь '
+        usersTS.postTo_Table(query2);
+        usersTS.showTheFullTable();*/
+        
+     /*   System.out.println(ca_ser.get(query, "user_name","user_password") + "size " + ca_ser.get(query, "user_name","user_password").size());
+        System.out.println(ca_ser.get(query, "user_name","user_password").size());
+        */
         }
-
-    }
-}
-
-
+}//

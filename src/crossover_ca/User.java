@@ -5,19 +5,18 @@
  */
 package crossover_ca;
 
+
 /**
  *
  * @author adminBeka
  * @author Liudmila Stolbetskaia
  */
+import java.util.Scanner;
+import java.sql.ResultSet;
+
 public abstract class User {
     
     private int userID;
-    private int personal_info_ID;
-
-    private String name;
-    private String surname;
-    private String email;
     private String userName;
     private String password;
     private String userRole;
@@ -28,6 +27,45 @@ public abstract class User {
         this.password = password;
         this.userRole = userRole;
     }
+    
+    
+    public void Authentication(String usernameDB, String passwordDB){
+        
+        boolean valid;
+        String username, password;
+        do{
+            try {
+                Scanner input = new Scanner(System.in);
+                System.out.println("Please enter your username");
+                valid = true;
+                username = input.nextLine();
+
+                System.out.println("Please enter your password");
+                password = input.nextLine();
+
+
+                if (username.equals(usernameDB) && password.equals(passwordDB)) {
+                    System.out.println("The access is proved");
+                } else {
+                    System.out.println("the access id denied");
+                    valid = false;
+                }
+            }catch(Exception e){
+                System.out.println("The password is invalid");
+                valid = false;
+
+            }
+        }while (!valid);
+    }
+    
+  /*  public void usernameValidation(String userName){
+
+        if(userName == userNameFromD){
+            System.out.println("Welcome " + userName);
+        }else{
+            System.out.println("Sorry wrong userName");
+        }
+    }*/
 
     public int getUserID() {
         return userID;
@@ -35,38 +73,6 @@ public abstract class User {
 
     public void setUserID(int userID) {
         this.userID = userID;
-    }
-
-    public int getPersonal_info_ID() {
-        return personal_info_ID;
-    }
-
-    public void setPersonal_info_ID(int personal_info_ID) {
-        this.personal_info_ID = personal_info_ID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getUserName() {
