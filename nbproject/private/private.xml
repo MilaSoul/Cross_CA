@@ -5,14 +5,12 @@
         <group>
             <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/crossover_ca/CheckUsernameAndPassword.java</file>
             <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/crossover_ca/User.java</file>
-            <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/crossover_ca/Table_Interactions.java</file>
             <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/crossover_ca/Interface_Admin.java</file>
-            <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/crossover_ca/Server_Connection.java</file>
             <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/crossover_ca/RegularUser.java</file>
             <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/crossover_ca/Interface_Regular_User.java</file>
+            <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/server_interaction/Table_Interaction.java</file>
             <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/crossover_ca/Admin.java</file>
             <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/crossover_ca/Crossover_CA.java</file>
-            <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/crossover_ca/InsertTo_Table.java</file>
         </group>
     </open-files>
 </project-private>

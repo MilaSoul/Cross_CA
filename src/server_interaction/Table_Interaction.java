@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package crossover_ca;
+package server_interaction;
 
 import java.io.PrintStream;
 import java.sql.Connection;
@@ -29,7 +29,7 @@ public class Table_Interaction {
             Class.forName("com.mysql.cj.jdbc.Driver");
            
             // Get a connection to the database
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ca_crossover", "root", "root");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ca_cross", "root", "root");
             
         
         }catch (SQLException var8) {
@@ -60,9 +60,9 @@ public class Table_Interaction {
      
             // our SQL SELECT query. 
             // if you only need a few columns, specify them by name instead of using "*"
-            String query = "SELECT `user_password`"
+            String query = "SELECT `password`"
                     + "FROM `users`" 
-                    + "WHERE user_name=" + "'" + user_name + "';";
+                    + "WHERE username=" + "'" + user_name + "';";
 
             // create the java statement
             Statement st = conn.createStatement();
@@ -72,7 +72,7 @@ public class Table_Interaction {
       
             // iterate through the java resultset
             while (rs.next()){
-                String user_password = rs.getString("user_password");
+                String user_password = rs.getString("password");
                
         // print the results
         pass = user_password;
@@ -99,9 +99,9 @@ public class Table_Interaction {
      
             // our SQL SELECT query. 
             // if you only need a few columns, specify them by name instead of using "*"
-            String query = "SELECT `iduser`"
+            String query = "SELECT `user_id`"
                     + "FROM `users`" 
-                    + "WHERE user_name=" + "'" + user_name + "';";
+                    + "WHERE username=" + "'" + user_name + "';";
 
             // create the java statement
             Statement st = conn.createStatement();
@@ -111,7 +111,7 @@ public class Table_Interaction {
       
             // iterate through the java resultset
             while (rs.next()){
-                int iduser = rs.getInt("iduser");
+                int iduser = rs.getInt("user_id");
                
         // print the results
         ID = iduser;
@@ -148,13 +148,12 @@ public class Table_Interaction {
       
             // iterate through the java resultset
             while (rs.next()){
-                int iduser = rs.getInt("iduser");
-                String user_name = rs.getString("user_name");
-                String user_password = rs.getString("user_password");
-                String user_role = rs.getString("user_role");
+                int iduser = rs.getInt("user_id");
+                String user_name = rs.getString("username");
+                String user_password = rs.getString("password");
         
         // print the results
-        System.out.format("%s, %s, %s, %s\n", iduser, user_name, user_password, user_role);
+        System.out.format("%s, %s, %s\n", iduser, user_name, user_password);
       }
       st.close();
     }
@@ -173,7 +172,7 @@ public class Table_Interaction {
       // create a java mysql database connection
       
      // create the java mysql update preparedstatement
-      String query = "update users set user_name = ? where iduser = ?";
+      String query = "update users set username = ? where user_id = ?";
       //"update users set num_points = 6000 where id = 2;";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
       preparedStmt.setString(1, user_name);
@@ -201,8 +200,8 @@ public class Table_Interaction {
             while(rs.next()){
               //  System.out.println(rs.getString("firstname")); 
                 PrintStream var10000 = System.out;
-                String var10001 = rs.getString("iduser");
-                var10000.println(var10001 + "\t" + rs.getString("user_name") + "\t" + rs.getString("user_password") + "\t" + rs.getString("user_role"));
+                String var10001 = rs.getString("user_id");
+                var10000.println(var10001 + "\t" + rs.getString("username") + "\t" + rs.getString("password"));
            } 
             
             // closening writing to the file 
@@ -239,7 +238,7 @@ public class Table_Interaction {
             while(rs.next()){
               //  System.out.println(rs.getString("firstname")); 
                 PrintStream var10000 = System.out;
-                String var10001 = rs.getString("iduser");
+                String var10001 = rs.getString("user_id");
                 var10000.println(var10001 + "\t" + rs.getString(attribute) + "\t" + rs.getString(attribute2));
                 array.add(rs.getString(attribute));
                 array.add(rs.getString(attribute2));
