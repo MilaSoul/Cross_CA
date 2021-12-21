@@ -19,9 +19,8 @@ public class Equation_3x3 { // 3X3
     private int[] constant = {0, 0, 0};
     private int det;
     private int[] ctranspose = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-    private float det1,finalX,finalY,finalZ;
-    private String equation1,equation2,equation3;
-    
+    private float det1, finalX, finalY, finalZ;
+    private String equation1, equation2, equation3;
 
     public int[] getXyz() {
         return xyz;
@@ -112,20 +111,22 @@ public class Equation_3x3 { // 3X3
     }
 
     public Equation_3x3() {
-        
+
         readingEquations();
     }
-    
-    
-    
 
     public void readingEquations() {
-        
+
         Scanner s = new Scanner(System.in);
-        
-        System.out.println("Please type your first equation :");
-         equation1 =s.next();
-        equation1=equation1.toLowerCase().trim().replace(" ", "");
+
+        System.out.println("Hello! I am offering you to solve 3 matrices linear equation.\n"
+                + "x+y+z=11\n"
+                + "2x+3y+5z=11\n"
+                + "x-5y+6z=29\n");
+
+        System.out.println("Please type the first equation from 3x3 matrix :");
+        equation1 = s.next();
+        equation1 = equation1.toLowerCase().trim().replace(" ", "");
         String[] x = equation1.split("x");
 
         if (x[0].equals("")) {
@@ -165,11 +166,10 @@ public class Equation_3x3 { // 3X3
         //System.out.println(cosnt[1]);
 
         this.constant[0] = Integer.parseInt(cosnt[1]);
-        
-        
-        System.out.println("Please type your second equation :");
+
+        System.out.println("Please type the second equation from 3x3 matrix :");
         equation2 = s.next();
-       equation2=equation2.toLowerCase().trim().replace(" ", "");
+        equation2 = equation2.toLowerCase().trim().replace(" ", "");
 
         String[] x2 = equation2.split("x");
 
@@ -209,11 +209,10 @@ public class Equation_3x3 { // 3X3
         String[] cosnt2 = z2[1].split("=");
         //System.out.println(cosnt2[1]);
         this.constant[1] = Integer.parseInt(cosnt2[1]);
-        
-        
-        System.out.println("Please type your third equation :");
+
+        System.out.println("Please type the third equation from 3x3 matrix :");
         equation3 = s.next();
-        equation3=equation3.toLowerCase().trim().replace(" ", "");
+        equation3 = equation3.toLowerCase().trim().replace(" ", "");
 
         String[] x3 = equation3.split("x");
 
@@ -285,9 +284,9 @@ public class Equation_3x3 { // 3X3
 
         // Final result
         this.setDet((aei + bfg + cdh) - (ceg + afh + bdi)); // 23
-        
+
         System.out.print("This is the Determinant of A: ");
-        System.out.println(this.getDet()+"\n");
+        System.out.println(this.getDet() + "\n");
         cofactorsA();
 
     }
@@ -316,7 +315,7 @@ public class Equation_3x3 { // 3X3
         System.out.println("[" + cf1 + "," + cf2 + "," + cf3 + "," + cf4 + "," + cf5 + "," + cf6 + "," + cf7 + "," + cf8 + "," + cf9 + "]\n");
 
         System.out.println("Tranpose of Cofactors A:");
-        
+
         this.ctranspose[0] = cf1;
         this.ctranspose[1] = cf4;
         this.ctranspose[2] = cf7;
@@ -327,40 +326,37 @@ public class Equation_3x3 { // 3X3
         this.ctranspose[7] = cf6;
         this.ctranspose[8] = cf9;
 
-        System.out.println(Arrays.toString(ctranspose)+"\n");
-       transposeAxB();// callimg the next method 
+        System.out.println(Arrays.toString(ctranspose) + "\n");
+        transposeAxB();// callimg the next method 
 
     }
-    
-    public void transposeAxB(){
-    
-        System.out.println("Tranpose of Cofactors A * B :");
-        
-        float axb [] = {0,0,0};
-        
-        axb[0] = ((this.ctranspose[0]*this.constant[0]) + (this.ctranspose[1]*this.constant[1]) + (this.ctranspose[2]*this.constant[2])); 
-        //System.out.println(axb[0]);
-        
-         axb[1] = ((this.ctranspose[3]*this.constant[0]) + (this.ctranspose[4]*this.constant[1]) + (this.ctranspose[5]*this.constant[2])); 
-        //System.out.println(axb[1]);
-        
-         axb[2] = ((this.ctranspose[6]*this.constant[0]) + (this.ctranspose[7]*this.constant[1]) + (this.ctranspose[8]*this.constant[2])); 
-        //System.out.println(axb[2]);
-        
-        det1 =1f/(this.getDet());// 23
 
-        
-        System.out.println(Arrays.toString(ctranspose)+" * "
-                           +Arrays.toString(constant)+" = "+ 
-                           "1/"+this.getDet()+" * "+ Arrays.toString(axb) +"\n");
-        
-        
-        System.out.println("Final values: \nX = "+det1 * axb[0]+"\nY = "+det1 * axb[1]+"\nZ = "+det1 * axb[2]);
-        
+    public void transposeAxB() {
+
+        System.out.println("Tranpose of Cofactors A * B :");
+
+        float axb[] = {0, 0, 0};
+
+        axb[0] = ((this.ctranspose[0] * this.constant[0]) + (this.ctranspose[1] * this.constant[1]) + (this.ctranspose[2] * this.constant[2]));
+        //System.out.println(axb[0]);
+
+        axb[1] = ((this.ctranspose[3] * this.constant[0]) + (this.ctranspose[4] * this.constant[1]) + (this.ctranspose[5] * this.constant[2]));
+        //System.out.println(axb[1]);
+
+        axb[2] = ((this.ctranspose[6] * this.constant[0]) + (this.ctranspose[7] * this.constant[1]) + (this.ctranspose[8] * this.constant[2]));
+        //System.out.println(axb[2]);
+
+        det1 = 1f / (this.getDet());// 23
+
+        System.out.println(Arrays.toString(ctranspose) + " * "
+                + Arrays.toString(constant) + " = "
+                + "1/" + this.getDet() + " * " + Arrays.toString(axb) + "\n");
+
+        System.out.println("Final values: \nX = " + det1 * axb[0] + "\nY = " + det1 * axb[1] + "\nZ = " + det1 * axb[2]);
+
         this.setFinalX(det1 * axb[0]);
         this.setFinalY(det1 * axb[1]);
         this.setFinalZ(det1 * axb[2]);
-    
-    
+
     }
 }

@@ -29,45 +29,9 @@ public class Crossover_CA {
      */
     public static void main(String[] args) throws Exception {
         // TODO code application logic here
-       
+
         User_Authentication login = new User_Authentication();
         login.UserLogin();
+    }
+
 }
-
- 
-        
-     
-        }
-
-
- /*"SELECT `user_id`"
-                    + "FROM `users`" 
-                    + "WHERE username=" + "'" + user_name + "';";
-
-
-
-
-//   table.tableUpdate("password", "Dublin", "CCT");
-    /*   String copyID = "\n SELECT user_id FROM  ";
-       String insertQuery = "INSERT INTO `ca_cross`.`personal_info`\n" +
-"(`firstname`,\n" + "`secondname`,\n" + "`email`,\n" + "`user_id`)" +
-"VALUES\n" + "('Mila',\n" + "'Stolbetskaya',\n" + "'mila@mail.ru'\n" + copyID + " );";
-       table.postTo_Table(insertQuery);
-       System.out.println(table.getFromTable("personal_info"));  
-
-
-    
-       /*String insertQuery = "INSERT INTO `ca_cross`.`personal_info`\n" +
-"(`firstname`,\n" + "`secondname`,\n" + "`email`,\n" + "`user_id`)" +
-"VALUES\n" + "('Mila',\n" + "'Stolbetskaya',\n" + "'mila@mail.ru',\n" + "'1')";
-    /*    String insertQuery = "INSERT INTO `ca_cross`.`users`\n" +
-"(`username`,\n" + "`password`)" +
-"VALUES\n" + "('Daniel',\n" + "'joints')"; //поставь ; перед " в конце
-        users.postTo_Table(insertQuery);*/
-     //   admin.showAll_Users();
-   
-        
-    
-  
-
-

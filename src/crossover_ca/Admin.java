@@ -5,9 +5,6 @@
  */
 package crossover_ca;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -16,30 +13,30 @@ import server_interaction.Table_Interaction;
 
 /**
  *
- * @author adminBeka
+ * @author Bekezhan Abdykarimov 2020297
  * @author Liudmila Stolbetskaia
  */
 public class Admin extends User implements Modify_User {
 
     public Admin() {
-        this(1, "", "", "", "", "", "");
+        this(1, null, null, null, null, null, null);
     }
 
     public Admin(int user_id, String username, String password, String userRole, String firstname, String secondname, String email) {
         super(user_id, username, password, userRole, firstname, secondname, email);
     }
 
-    public void showAdminFunctions() {
+    public void showAdminFunctions() { // method shows all available functions for admin
         try {
             int answer;
             Scanner sc = new Scanner(System.in);
             do {
                 System.out.println("Hello dear user, what you would like to do? \n"
-                        + "1) Modify your profile"
-                        + "2) See all users in the system"
+                        + "1) Modify your profile  \n"
+                        + "2) See all users in the system  \n"
                         + "3) See all users operations"
-                        + "4) Delete a particular user from the system"
-                        + "5) exit"
+                        + "4) Delete a particular user from the system  \n"
+                        + "5) exit  \n"
                         + "Please type your answer: \n");
 
                 answer = sc.nextInt();

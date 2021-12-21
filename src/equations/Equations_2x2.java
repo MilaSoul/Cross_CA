@@ -120,8 +120,12 @@ solutionSplit();
  
  public void solutionSplit() throws Exception{
  
-     
-     System.out.println("Please type your first equation, it should follow this model : 2x-3y=10:");
+      System.out.println("Hello! I am offering you to solve 2 matrices linear equation.\n"
+                + "2x-3y=2\n"
+                + "3x+8y=3\n"
+                );
+     System.out.println("Please type the first equation\n");
+
       this.setEq(sc.next().toLowerCase().trim().replace(" ",""));
      //this.setEq("2x-3y=2");
      
@@ -140,13 +144,8 @@ solutionSplit();
     constant[0] = Integer.parseInt(constant2[1]);
     
     
-    
-
-
-     
-     
-  
-     System.out.println("Please type your second equation, it should follow this model : 2x-3y=10:");
+       
+     System.out.println("Please type the second equation");
      this.setEq_2(sc.next().toLowerCase().trim().replace(" ",""));
      //this.setEq_2("3x+8y=3");
      
@@ -158,25 +157,7 @@ solutionSplit();
      
      String[] const_2 = y_2[1].split("=");
      constant[1]=Integer.parseInt(const_2[1]);
-     
-//     System.out.println(x_2[0]);
-//     System.out.println(x_2[1]);
-//     
-//     System.out.println(y_2[0]);
-//     System.out.println(y_2[1]);
-//     
-//     System.out.println(const_2[1]);
-     
-     
-
-//     System.out.println(this.getVar_xy()[0]);
-//     System.out.println(this.getVar_xy()[1]);
-//     System.out.println(this.getConstant()[0]);
-//     
-//     System.out.println(this.getVar_xy()[2]);
-//     System.out.println(this.getVar_xy()[3]);
-//     System.out.println(this.getConstant()[1]);
-     
+          
      det();
      
     
@@ -202,11 +183,7 @@ solutionSplit();
      inversA[2] = (this.getVar_xy()[2] * -1);
      inversA[3] = this.getVar_xy()[3];
  
-//    inversA[0] = 1.00f;
-//     inversA[1] = 2f;
-//     inversA[2] = (3f);
-//     inversA[3] = 4f;
-//     
+   
      System.out.println(Arrays.toString(this.inversA));
      inverseAxB();
 }
