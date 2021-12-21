@@ -100,19 +100,27 @@ public class Admin extends User implements Modify_User {
 
     public void removeUser() {
         try {
+            String query1, query2, query3, query4;
             Scanner sc = new Scanner(System.in);
+            Table_Interaction table = new Table_Interaction();
             System.out.println("Which user you would like to delete ? \n");
             showAll_Users();
             System.out.println("Please enter user ID of the user that you would like to delete: \n");
             int answer = sc.nextInt();
             sc.nextLine(); // to handle the /n (Enter key) from the buffer
-            Table_Interaction table = new Table_Interaction();
-            String query = "DELETE `ca_cross`.`users`, `ca_cross`.`personal_info`, `ca_cross`.`role`"
-                    + "FROM ((`ca_cross`.`users`"
-                    + "INNER JOIN `ca_cross`.`personal_info` ON `users`.`user_id` = `personal_info`.`user_id`)"
-                    + "INNER JOIN `ca_cross`.`role` ON `users`.`user_id` = `role`.`user_id`)"
-                    + "WHERE `users`.`user_id` = " + "'" + answer + "';";
-            table.deleteFromTable(query);
+
+            query1 = "DELETE FROM `ca_cross`.`personal_info`"
+                    + "WHERE `user_id` = " + "'" + answer + "';";
+            query2 = "DELETE FROM `ca_cross`.`role`"
+                    + "WHERE `user_id` = " + "'" + answer + "';";
+            query3 = "DELETE FROM `ca_cross`.`users`"
+                    + "WHERE `user_id` = " + "'" + answer + "';";
+            query4 = "DELETE FROM `ca_cross`.`equations`"
+                    + "WHERE `user_id` = " + "'" + answer + "';";
+            table.deleteFromTable(query1);
+            table.deleteFromTable(query2);
+            table.deleteFromTable(query3);
+            table.deleteFromTable(query4); 
         } catch (Exception e) {
         }
     }
