@@ -5,14 +5,15 @@
  */
 package server_interaction;
 
+import com.mysql.cj.jdbc.result.ResultSetMetaData;
 import java.io.PrintStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  *
@@ -20,23 +21,42 @@ import java.util.ArrayList;
  */
 public class Table_Interaction {
 
+    private Server_Connection ca;
 
-    public Connection connectToTheServer(){
-        
-        Connection conn = null;
+    public Table_Interaction() {
+        this(new Server_Connection());
+    }
+
+    public Table_Interaction(Server_Connection ca) {
+        this.ca = ca;
+    }
+
+    public String selectFromTable(String select, String from, String where, String condition) throws SQLException {
+
+        String selectedValue = null;
         try {
-            
-            Class.forName("com.mysql.cj.jdbc.Driver");
-           
-            // Get a connection to the database
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ca_cross", "root", "root");
-            
-        
-        }catch (SQLException var8) {
+            Connection conn = ca.connectToTheServer();
+            // create a java mysql database connection
+
+            String selectQuery = "SELECT " + select + " \n"
+                    + "FROM " + from + " \n"
+                    + "WHERE " + where + " = ?";
+            PreparedStatement statement = conn.prepareStatement(selectQuery);
+            statement.setString(1, condition);
+
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                selectedValue = result.getString(where);
+            }
+
+            conn.close();
+            return selectedValue;
+        } catch (SQLException var8) {
             SQLException se = var8;
             System.out.println("SQL Exception:");
 
-            while(se != null) {
+            while (se != null) {
                 System.out.println("State  : " + se.getSQLState());
                 System.out.println("Message: " + se.getMessage());
                 System.out.println("Error  : " + se.getErrorCode());
@@ -45,216 +65,76 @@ public class Table_Interaction {
         } catch (Exception var9) {
             System.out.println(var9);
         }
-        System.out.println("Connected!");
-        return conn;
-      
-        
-    }
-    
-    public String selectFromTable_Password(String user_name){
-        String pass;
-        try{
-      
-            Connection conn = connectToTheServer();
-            // create our mysql database connection
-     
-            // our SQL SELECT query. 
-            // if you only need a few columns, specify them by name instead of using "*"
-            String query = "SELECT `password`"
-                    + "FROM `users`" 
-                    + "WHERE username=" + "'" + user_name + "';";
-
-            // create the java statement
-            Statement st = conn.createStatement();
-      
-            // execute the query, and get a java resultset
-            ResultSet rs = st.executeQuery(query);
-      
-            // iterate through the java resultset
-            while (rs.next()){
-                String user_password = rs.getString("password");
-               
-        // print the results
-        pass = user_password;
-        System.out.format("%s\n", user_password);
-        return pass;
-      }
-      st.close();
-    }
-    catch (Exception e)
-    {
-      System.err.println("Got an exception! ");
-      System.err.println(e.getMessage());
-    
-    }
         return null;
-}
-    
-    public int selectFromTable_ID(String user_name){
-        int ID;
-        try{
-      
-            Connection conn = connectToTheServer();
-            // create our mysql database connection
-     
-            // our SQL SELECT query. 
-            // if you only need a few columns, specify them by name instead of using "*"
-            String query = "SELECT `user_id`"
-                    + "FROM `users`" 
-                    + "WHERE username=" + "'" + user_name + "';";
+    }
 
-            // create the java statement
-            Statement st = conn.createStatement();
-      
-            // execute the query, and get a java resultset
-            ResultSet rs = st.executeQuery(query);
-      
-            // iterate through the java resultset
-            while (rs.next()){
-                int iduser = rs.getInt("user_id");
-               
-        // print the results
-        ID = iduser;
-        System.out.format("%s\n", iduser);
-        return ID;
-      }
-      st.close();
-    }
-    catch (Exception e)
-    {
-      System.err.println("Got an exception! ");
-      System.err.println(e.getMessage());
-    
-    }
-        return-1;
-}
-    
-    
-    public void selectFromTable(){
-        try{
-      
-            Connection conn = connectToTheServer();
-            // create our mysql database connection
-     
-            // our SQL SELECT query. 
-            // if you only need a few columns, specify them by name instead of using "*"
-            String query = "SELECT * FROM users";
+    public void tableUpdate(String updateQuery, String newValue, String where) {
 
-            // create the java statement
-            Statement st = conn.createStatement();
-      
-            // execute the query, and get a java resultset
-            ResultSet rs = st.executeQuery(query);
-      
-            // iterate through the java resultset
-            while (rs.next()){
-                int iduser = rs.getInt("user_id");
-                String user_name = rs.getString("username");
-                String user_password = rs.getString("password");
-        
-        // print the results
-        System.out.format("%s, %s, %s\n", iduser, user_name, user_password);
-      }
-      st.close();
-    }
-    catch (Exception e)
-    {
-      System.err.println("Got an exception! ");
-      System.err.println(e.getMessage());
-    
-    }
-}
-    
-    public void tableUpdate(String user_name, int iduser){
-    try
-    {
-        Connection conn = connectToTheServer();
-      // create a java mysql database connection
-      
-     // create the java mysql update preparedstatement
-      String query = "update users set username = ? where user_id = ?";
-      //"update users set num_points = 6000 where id = 2;";
-      PreparedStatement preparedStmt = conn.prepareStatement(query);
-      preparedStmt.setString(1, user_name);
-      preparedStmt.setInt(2, iduser);
-
-      // execute the java preparedstatement
-      preparedStmt.executeUpdate();
-      
-      conn.close();
-    }
-    catch (Exception e)
-    {
-      System.err.println("Got an exception! ");
-      System.err.println(e.getMessage());
-    }
-  }
-    
-    public void showTheFullTable(){
         try {
-            Connection conn = connectToTheServer();
-            Statement stmt = conn.createStatement() ;
-            
-            ResultSet rs = stmt.executeQuery("SELECT * FROM users");
-             
-            while(rs.next()){
-              //  System.out.println(rs.getString("firstname")); 
-                PrintStream var10000 = System.out;
-                String var10001 = rs.getString("user_id");
-                var10000.println(var10001 + "\t" + rs.getString("username") + "\t" + rs.getString("password"));
-           } 
-            
-            // closening writing to the file 
-                rs.close();
-                stmt.close();
-                conn.close();
-            
-            } catch (SQLException var8) {
-            SQLException se = var8;
-            System.out.println("SQL Exception:");
+            Connection conn = ca.connectToTheServer();
+            // create a java mysql database connection
 
-            while(se != null) {
-                System.out.println("State  : " + se.getSQLState());
-                System.out.println("Message: " + se.getMessage());
-                System.out.println("Error  : " + se.getErrorCode());
-                se = se.getNextException();
-            }
-        } catch (Exception var9) {
-            System.out.println(var9);
+            // create the java mysql update preparedstatement
+            String query = updateQuery;
+
+            /*"UPDATE `ca_cross`.`"+ tableName + "`" 
+        +"SET `" + value + "` = ?"
+        +"WHERE `user_id` = ?";*/
+            //"update users set num_points = 6000 where id = 2;";
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.setString(1, newValue);
+            preparedStmt.setString(2, where);
+
+            // execute the java preparedstatement
+            preparedStmt.executeUpdate();
+
+            conn.close();
+        } catch (Exception e) {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
         }
     }
-    public ArrayList<String> getFromTable(String query, String attribute, String attribute2) throws Exception{
-        try{
-            
+
+    public ArrayList<String> getFromTable(String selectQuery) {
+
+        try {
+            String query = selectQuery;
+
             ArrayList<String> array = new ArrayList<>();
-            
-            Connection conn = connectToTheServer();
-            Statement stmt = conn.createStatement() ;
-            
+
+            Connection conn = ca.connectToTheServer();
+            Statement stmt = conn.createStatement();
+
             ResultSet rs = stmt.executeQuery(query);
-            
-       
-      
-            while(rs.next()){
-              //  System.out.println(rs.getString("firstname")); 
-                PrintStream var10000 = System.out;
-                String var10001 = rs.getString("user_id");
-                var10000.println(var10001 + "\t" + rs.getString(attribute) + "\t" + rs.getString(attribute2));
-                array.add(rs.getString(attribute));
-                array.add(rs.getString(attribute2));
-           } 
-                conn.close();
-                stmt.close();
-                rs.close();
-                
-                return array;
+
+            ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
+            int numberOfColumn = rsmd.getColumnCount();
+            //       System.out.println(numberOfColumn);
+
+            while (rs.next()) { //will run the loop until as long as there is a result coming 
+
+                for (int column = 1; column <= numberOfColumn; column++) { //will add the values from columns one by one 
+                    if (rs.wasNull()) {
+                            array.add((String) rs.getObject(column));
+                       //   array.add("null");
+                    } else {
+                        array.add(rs.getString(column));
+                    }
+                }
+
+            }
+            conn.close();
+            stmt.close();
+            rs.close();
+            System.out.println(array);
+            return array;
             // closening writing to the file 
 
-            } catch (SQLException var8) {
+        } catch (SQLException var8) {
             SQLException se = var8;
             System.out.println("SQL Exception:");
 
-            while(se != null) {
+            while (se != null) {
                 System.out.println("State  : " + se.getSQLState());
                 System.out.println("Message: " + se.getMessage());
                 System.out.println("Error  : " + se.getErrorCode());
@@ -262,26 +142,79 @@ public class Table_Interaction {
             }
         } catch (Exception var9) {
             System.out.println(var9);
-        }  
+        }
         return null;
-}
-    
-    
-    public void postTo_Table(String insertQuery){
-      try{
-            Connection conn = connectToTheServer();
-            Statement posted = conn.createStatement() ;
-            
+    }
+
+    public void postTo_Table(String insertQuery) {
+
+        try {
+            Connection conn = ca.connectToTheServer();
+            Statement posted = conn.createStatement();
+
             posted.executeUpdate(insertQuery);
-            
+
             conn.close();
             System.out.println("Insert Complited!");
-      }catch(Exception e){
-          System.err.println("e");
-          System.err.println(e.getMessage());
-      }
-      }
-    
+        } catch (Exception e) {
+            System.err.println("e");
+            System.err.println(e.getMessage());
+        }
+    }
 
-    
+    public String selectUser_ID(String username) throws SQLException {
+        String select = "user_id";
+        String from = "users";
+        String where = "username";
+        String value = "user_id";
+        try {
+            String user_id = selectFromTable(select, from, where, username);
+            return user_id;
+        } catch (SQLException var8) {
+            SQLException se = var8;
+            System.out.println("SQL Exception:");
+
+            while (se != null) {
+                System.out.println("State  : " + se.getSQLState());
+                System.out.println("Message: " + se.getMessage());
+                System.out.println("Error  : " + se.getErrorCode());
+                se = se.getNextException();
+            }
+        } catch (Exception var9) {
+            System.out.println(var9);
+        }
+        return null;
+    }
+
+    public void deleteFromTable(String query) {
+        Connection conn = ca.connectToTheServer();
+        Statement stmt = null;
+        try {
+
+            conn = ca.connectToTheServer();
+            stmt = (Statement) conn.createStatement();
+            String query1 = query;
+            stmt.executeUpdate(query1);
+            System.out.println("Record is deleted from the table successfully..................");
+        } catch (SQLException excep) {
+            excep.printStackTrace();
+        } catch (Exception excep) {
+            excep.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+            }
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        System.out.println("Please check it in the MySQL Table. Record is now deleted.......");
+    }
 }

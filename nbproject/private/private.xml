@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>src/crossover_ca/RegularUser.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>112</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/crossover_ca/CheckUsernameAndPassword.java</file>
-            <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/crossover_ca/User.java</file>
-            <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/crossover_ca/Interface_Admin.java</file>
-            <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/crossover_ca/RegularUser.java</file>
-            <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/crossover_ca/Interface_Regular_User.java</file>
             <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/server_interaction/Table_Interaction.java</file>
+            <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/crossover_ca/RegularUser.java</file>
             <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/crossover_ca/Admin.java</file>
+            <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/server_interaction/Validation.java</file>
             <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/crossover_ca/Crossover_CA.java</file>
+            <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/server_interaction/Server_Connection.java</file>
+            <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/crossover_ca/User_Authentication.java</file>
+            <file>file:/C:/Users/adminBeka/Documents/NetBeansProjects/Crossover_CA/src/crossover_ca/Modify_User.java</file>
         </group>
     </open-files>
 </project-private>

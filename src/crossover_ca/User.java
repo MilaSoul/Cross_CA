@@ -5,82 +5,47 @@
  */
 package crossover_ca;
 
-
 /**
  *
  * @author adminBeka
  * @author Liudmila Stolbetskaia
  */
-import java.util.Scanner;
-import java.sql.ResultSet;
 
 public abstract class User {
-    
-    private int userID;
-    private String userName;
+   
+    private int user_id;
+    private String username;
     private String password;
     private String userRole;
+    private String firstname;
+    private String secondname;
+    private String email;
 
-    public User(int userID, String userName, String password, String userRole) {
-        this.userID = userID;
-        this.userName = userName;
+    public User(int user_id, String username, String password, String userRole, String firstname, String secondname, String email) {
+        this.user_id = user_id;
+        this.username = username;
         this.password = password;
         this.userRole = userRole;
-    }
-    
-    
-    public void Authentication(String usernameDB, String passwordDB){
-        
-        boolean valid;
-        String username, password;
-        do{
-            try {
-                Scanner input = new Scanner(System.in);
-                System.out.println("Please enter your username");
-                valid = true;
-                username = input.nextLine();
-
-                System.out.println("Please enter your password");
-                password = input.nextLine();
-
-
-                if (username.equals(usernameDB) && password.equals(passwordDB)) {
-                    System.out.println("The access is proved");
-                } else {
-                    System.out.println("the access id denied");
-                    valid = false;
-                }
-            }catch(Exception e){
-                System.out.println("The password is invalid");
-                valid = false;
-
-            }
-        }while (!valid);
-    }
-    
-  /*  public void usernameValidation(String userName){
-
-        if(userName == userNameFromD){
-            System.out.println("Welcome " + userName);
-        }else{
-            System.out.println("Sorry wrong userName");
-        }
-    }*/
-
-    public int getUserID() {
-        return userID;
+        this.firstname = firstname;
+        this.secondname = secondname;
+        this.email = email;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public int getUser_id() {
+        return user_id;
     }
 
-    public String getUserName() {
-        return userName;
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -98,5 +63,29 @@ public abstract class User {
     public void setUserRole(String userRole) {
         this.userRole = userRole;
     }
-    
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getSecondname() {
+        return secondname;
+    }
+
+    public void setSecondname(String secondname) {
+        this.secondname = secondname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 }
