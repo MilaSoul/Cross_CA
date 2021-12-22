@@ -18,8 +18,13 @@ import server_interaction.Server_Connection;
 import server_interaction.Validation;
 
 /**
- *
- * @author adminBeka
+ *Log_IN class has methods to 
+ * 1) to output the startup menu
+ * 2) to Log-in 
+ * 3) to Log-up 
+ * 4) create Admin or regular user
+ * @author Bekezhan Abdykarimov
+ * @author Liudmila Stolbetskaia
  */
 public class Log_IN {
 
@@ -33,49 +38,58 @@ public class Log_IN {
         this.ca = ca;
     }
 
-    public void StartupMenu() throws SQLException, ClassNotFoundException {
+    public void StartupMenu() throws SQLException, ClassNotFoundException {  // shows starup menu and offers to user to either login or logup
 
         int answer;
         Scanner scan = new Scanner(System.in);
-        System.out.println("Hello \n"
-                + "1) Log-up \n"
-                + "2) Log-in \n"
-                + " Enter 1 if you do not have an accaunt \n"
-                + " Enter 2 if you have an account \n");
-        answer = scan.nextInt();
-        scan.nextLine(); // to handle the /n (enterkey)
-        if (answer == 1) {
-            Logup();
-            Login();
-        } else if (answer == 2) {
-            Login();
+        try {
+            System.out.println("Hello, \n"
+                    + "1) Log-up \n"
+                    + "2) Log-in \n"
+                    + " Enter 1 if you do not have an accaunt \n"
+                    + " Enter 2 if you have an account \n");
+            answer = scan.nextInt();
+            scan.nextLine(); // to handle the /n (enterkey)
+            if (answer == 1) {
+                Logup();
+                Login();
+            } else if (answer == 2) {
+                Login();
+            } else {
+                System.out.println("Error!!! Try again please!!!");
+                StartupMenu();
+            }
+        } catch (Exception e) {
+            System.out.println("Error!!! Try again please!!!");
+            StartupMenu();
         }
 
     }
 
     public void Login() throws SQLException,
-            ClassNotFoundException {
+            ClassNotFoundException {   //Login method that allows us to get and store user's input, check if it is valid, and match it with the Database 
 
+        //1) getting user's username and password 
         Scanner scan = new Scanner(System.in);
         //getting username and password
-        System.out.println("Hello \n"
+        System.out.println("Hello, enter your username and password to log-in\n"
                 + "Please enter your username: \n");
         String username = scan.next();
         System.out.println("Please enter your password: \n");
         String password = scan.next();
 
         int user_id;
-        String usernameC, passwordC; // C = stand for Checked
         try {
 
             Connection con = ca.connectToTheServer();   // Connecting to a server by using Server_connection class
-
+            //2) selecting username and password(that user have entered) from the table
             PreparedStatement stm = con.prepareStatement("SELECT user_id, username, password FROM users WHERE username = ? AND password = ?");
             stm.setString(1, username);
             stm.setString(2, password);
 
             ResultSet result = stm.executeQuery(); //executing a statement
-            if (result.next()) { //will execute if there is will be a result from the query
+            //3) if username and password matches with the table:
+            if (result.next()) { //this block will execute if there is will be a result from the query
 
                 System.out.println(" \n User " + username + " is in the table \n");
                 user_id = result.getInt("user_id");
@@ -122,7 +136,10 @@ public class Log_IN {
     }
 
     public void Logup() throws ClassNotFoundException {
-        
+        /*Logup method allows us to register get and store user's input, 
+          check if it is valid, and post it into the Database's tables one by one
+         */
+
         String username, password, firstname, secondname, email;
         boolean validUsername, validPassword, validFirstname, validSecondname, validEmail;
         Validation v = new Validation();
@@ -140,15 +157,16 @@ public class Log_IN {
             validPassword = v.isValidPassword(password);
             System.out.println(validPassword);
 
-        } while (validPassword != true || validUsername != true); // Will run the loop until username and password won't be valid
+        } while (validPassword != true || validUsername != true); // 1) Will run the loop until username and password won't be valid
 
+        //2) if username and password are valid, this peice of code will insert data to Database(users table) 
         int user_id;
-     //  String user_id;
-
         String usersT = "users";
         String whatToInsert = "username, password";
         Table_Interaction table = new Table_Interaction();
         table.insertTo_Table(usersT, whatToInsert, username, password);
+        // 3) after inserting data into the users table, which is gives us a user_id
+        // we use this user_id to post other data and link it to this user
         user_id = table.selectUser_ID(username);
         System.out.println(user_id);
         System.out.println("Username and Password Created! \n"
@@ -159,7 +177,7 @@ public class Log_IN {
             firstname = sc.nextLine();
             validFirstname = v.isNameValid(firstname);
 
-        } while (validFirstname != true);
+        } while (validFirstname != true); 
 
         do {
             System.out.println("Type your secondname: \n");
@@ -174,17 +192,20 @@ public class Log_IN {
             validEmail = v.isEmailValid(email);
 
         } while (validEmail != true);
-
+        
+        //4) entered personal information is valid, now we can insert it to the table
         String piT = "personal_info";
         whatToInsert = "firstname, secondname, email, user_id";
- 
+
         String ID = Integer.toString(user_id);
         table.insertTo_Table(piT, whatToInsert, firstname, secondname, email, ID);
-        table.insertTo_Table("role", "role_type, user_id", "user", ID);
+        table.insertTo_Table("role", "role_type, user_id", "user", ID); //posting user's role type and user id to the role table
         System.out.println("Registration complite!");
+      
 
-         }
-    public Admin CreateUser() {
+    }
+
+    public Admin CreateUser() { //Creates and returns an Admin object with the data from the database a
         //method is basically just puts the data from DataBase to the Admin constructor 
 
         String selectQuery = "SELECT `users`.`user_id`, `users`.`username`, `users`.`password`, `personal_info`.`firstname`, `personal_info`.`secondname`, `personal_info`.`email`, `role`.`role_type`"
@@ -195,12 +216,13 @@ public class Log_IN {
         Table_Interaction tableint = new Table_Interaction(); //calling table interaction class with the templates to interact with the table
         ArrayList array;
         int user_id;
-        String username, password, firstname, secondname, email, role; // 5 values
+        String username, password, firstname, secondname, email, role; // 7 values(with int user_id)
 
         try {
             int j = 0;
-            array = tableint.getFromTable(selectQuery);
-            // 5 colums with values to output all of them in 1 row, we devide array size to 5 ( 5 values) 
+            array = tableint.getFromTable(selectQuery); // method that is getting multiple values from database and puts them into the array list and returns this array list
+            // 7 colums with values to output all of them in 1 row, we devide array size to 7 ( 7 values) 
+            // adding the data from the getFromTable() arraylist to our local array
             user_id = Integer.parseInt(array.get(j).toString());
             username = array.get(++j).toString();
             password = array.get(++j).toString();
@@ -208,9 +230,8 @@ public class Log_IN {
             secondname = array.get(++j).toString();
             email = array.get(++j).toString();
             role = array.get(++j).toString();
-            // System.out.println(user_id + " " + username + " " + firstname + " " + secondname + " " + email + " " + role);
-            Admin admin = new Admin(user_id, username, password, firstname, secondname, email, role);
-            return admin;
+            Admin admin = new Admin(user_id, username, password, firstname, secondname, email, role); //putting that data to the empty constructor
+            return admin; //returning ready user object with appropiate data from database
             //String table*/
         } catch (Exception ex) {
             Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
@@ -218,7 +239,9 @@ public class Log_IN {
         return null;
     }
 
-    public RegularUser CreateUser(int id) {
+    public RegularUser CreateUser(int id) { // exact the same method as above, the only differences are 
+                                            //1) it returns Regular user instead of admin
+                                            //2) it is asking user id 
 
         String selectQuery = "SELECT `users`.`user_id`, `users`.`username`, `users`.`password`, `personal_info`.`firstname`, `personal_info`.`secondname`, `personal_info`.`email`, `role`.`role_type`"
                 + "FROM ((`ca_cross`.`users`"

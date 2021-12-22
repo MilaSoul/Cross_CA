@@ -15,8 +15,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
- *
- * @author adminBeka
+ *Server Connection class allows us to avoid keep writing this peace of code over and over again 
+ * @author Bekezhan Abdykarimov 
+ * @author Liudmila Stolbetskaia
  */
 public class Server_Connection {
 
@@ -27,7 +28,7 @@ public class Server_Connection {
     this("jdbc:mysql://localhost:3306/ca_cross", "root", "root");
     }
     
-    
+    //Server connection constructor 
     public Server_Connection(String dbServer, String usernameS, String passwordS) {
         this.dbServer = dbServer;
         this.usernameS = usernameS;

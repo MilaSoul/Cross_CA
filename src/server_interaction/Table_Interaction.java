@@ -16,12 +16,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- *
- * @author adminBeka
+ * Table_Interaction class has template methods to interact with the table and avoid code overwriting 
+ * @author Bekezhan Abdykarimov
  */
 public class Table_Interaction {
 
-    private Server_Connection ca;
+    private Server_Connection ca; 
 
     public Table_Interaction() {
         this(new Server_Connection());
@@ -30,41 +30,10 @@ public class Table_Interaction {
     public Table_Interaction(Server_Connection ca) {
         this.ca = ca;
     }
-
-     public String selectFromTable(String selectQuery, String value){
-        
-        String selectedValue = null;
-        try {
-            Connection con = ca.connectToTheServer();
-
-            PreparedStatement stm = con.prepareStatement(selectQuery);
-            ResultSet result = stm.executeQuery();
-
-            while (result.next()) {
-                selectedValue = (result.getString(value));
-
-                //System.out.println(user_id);
-            }
-            con.close();
-            return selectedValue;
-        } catch (SQLException var8) {
-            SQLException se = var8;
-            System.out.println("SQL Exception:");
-
-            while (se != null) {
-                System.out.println("State  : " + se.getSQLState());
-                System.out.println("Message: " + se.getMessage());
-                System.out.println("Error  : " + se.getErrorCode());
-                se = se.getNextException();
-            }
-        } catch (Exception var9) {
-            System.out.println(var9);
-        }
-        return null;
-    }
-
+    // template method that will update a particular tuple in the table in DB
+    // to do so we need to put updateQuery with new Value and condition to put it(String where)
     public void tableUpdate(String updateQuery, String newValue, String where) {
-
+      
         try {
             Connection conn = ca.connectToTheServer();
             // create a java mysql database connection
@@ -72,10 +41,6 @@ public class Table_Interaction {
             // create the java mysql update preparedstatement
             String query = updateQuery;
 
-            /*"UPDATE `ca_cross`.`"+ tableName + "`" 
-        +"SET `" + value + "` = ?"
-        +"WHERE `user_id` = ?";*/
-            //"update users set num_points = 6000 where id = 2;";
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.setString(1, newValue);
             preparedStmt.setString(2, where);
@@ -88,8 +53,10 @@ public class Table_Interaction {
             System.err.println("Got an exception! ");
             System.err.println(e.getMessage());
         }
-    }
+    } 
 
+    //method allows us to get multiple value and store it in array list
+    // need to put query to do so
     public ArrayList<String> getFromTable(String selectQuery) {
 
         try {
@@ -139,10 +106,10 @@ public class Table_Interaction {
         }
         return null;
     }
-
+    //method allows us to insert 4 values to the table 
     public void insertTo_Table(String tableName, String whatToInsert, String value1, String value2, String value3, String value4) {
         try {
-            Connection con = ca.connectToTheServer();
+            Connection con = ca.connectToTheServer(); //connecting to the server
 
             PreparedStatement stm = con.prepareStatement("INSERT INTO " + tableName + " (" + whatToInsert + ")" + " VALUES (?, ?, ?, ?);");
             stm.setString(1, value1);
@@ -161,7 +128,7 @@ public class Table_Interaction {
             System.err.println(e.getMessage());
         }
     }
-
+    //does the same as the method above but inserts only 2 values
     public void insertTo_Table(String tableName, String whatToInsert, String value1, String value2) {
         try {
             Connection con = ca.connectToTheServer();
@@ -181,7 +148,7 @@ public class Table_Interaction {
             System.err.println(e.getMessage());
         }
     }
-
+    //method return user ID from users table
     public int selectUser_ID(String username) {
 
         int user_id = 0;
@@ -202,7 +169,7 @@ public class Table_Interaction {
         return -1;
     }
 
-    
+    //templete to delete data from a table depinding on the query 
     public void deleteFromTable(String query) {
         Connection conn = ca.connectToTheServer();
         Statement stmt = null;

@@ -20,11 +20,11 @@ import equations.Equation_3x3;
 import java.sql.SQLException;
 
 /**
- *
- * @author adminBeka
+ * Regular user class with his constructor  and methods
+ * @author Bekezhan Abdykarimov 
  * @author Liudmila Stolbetskaia
  */
-public class RegularUser extends User implements Interface_RegUser, Modify_User {
+public class RegularUser extends User implements Modify_User {
 
     private Server_Connection ca;
 
@@ -66,6 +66,8 @@ public class RegularUser extends User implements Interface_RegUser, Modify_User 
             } while (answer != 4);
 
         } catch (Exception ex) {
+            System.out.println("Something went wrong!!! Please try again! \n");
+            showUserFunctions();
 
         }
     }
@@ -76,20 +78,21 @@ public class RegularUser extends User implements Interface_RegUser, Modify_User 
         try {
 
             Connection con = ca.connectToTheServer();
+            //inserting statment into the table in DB
             PreparedStatement p = con.prepareStatement("INSERT INTO equations (equs_1,equs_2,det_1,solution_1,solution_2,user_id,equs_3) VALUES(?,?,?,?,?,?,?)");
-            p.setString(1, eq.getEq());
-            p.setString(2, eq.getEq_2());
-            p.setFloat(3, eq.getDet());
-            p.setFloat(4, eq.getXandy()[0]);
-            p.setFloat(5, eq.getXandy()[1]);
+            p.setString(1, eq.getEq());//set equation 1 (getEq from the equation class 2X2)
+            p.setString(2, eq.getEq_2());//set equation 2 
+            p.setFloat(3, eq.getDet());//set determinant
+            p.setFloat(4, eq.getXandy()[0]);// set x
+            p.setFloat(5, eq.getXandy()[1]);// set y
 
-            p.setInt(6, this.getUser_id());
-            p.setString(7, "NULL");
+            p.setInt(6, this.getUser_id()); //set user id (FK)
+            p.setString(7, "NULL"); //nul as we do not have equation 3 in this case 
 
-            p.executeUpdate();
+            p.executeUpdate();//store result
 
             con.close();
-            p.close();
+            p.close();//close the statment
 
         } catch (SQLException e) {
         }
@@ -100,23 +103,23 @@ public class RegularUser extends User implements Interface_RegUser, Modify_User 
 
         Equation_3x3 eq = new Equation_3x3();
         try {
-
+            //inserting statment into the table in DB
             Connection con = ca.connectToTheServer();
             PreparedStatement p = con.prepareStatement("INSERT INTO equations (equs_1,equs_2,equs_3,"
                     + "det_1,solution_1,solution_2,solution_3,user_id) VALUES(?,?,?,?,?,?,?,?)");
-            p.setString(1, eq.getEquation1());
-            p.setString(2, eq.getEquation2());
-            p.setString(3, eq.getEquation3());
-            p.setFloat(4, eq.getDet()); //getDet1()
-            p.setFloat(5, eq.getFinalX());
-            p.setFloat(6, eq.getFinalY());
-            p.setFloat(7, eq.getFinalZ());
-            p.setInt(8, this.getUser_id());
+            p.setString(1, eq.getEquation1());//set equation 1  (getEquation from the equation class 3X3)
+            p.setString(2, eq.getEquation2());//set equation 2
+            p.setString(3, eq.getEquation3());//set equation 2
+            p.setFloat(4, eq.getDet());//set determinant
+            p.setFloat(5, eq.getFinalX());//set x
+            p.setFloat(6, eq.getFinalY());//set y
+            p.setFloat(7, eq.getFinalZ());//set z
+            p.setInt(8, this.getUser_id());//set user id (FK)
 
             p.executeUpdate();
 
             con.close();
-            p.close();
+            p.close();//close the statment
 
         } catch (SQLException e) {
         }

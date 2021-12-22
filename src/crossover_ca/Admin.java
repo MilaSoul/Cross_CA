@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import server_interaction.Table_Interaction;
 
 /**
+ * Admin class has his constructor and it's methods
  *
  * @author Bekezhan Abdykarimov 2020297
  * @author Liudmila Stolbetskaia
@@ -31,7 +32,7 @@ public class Admin extends User implements Modify_User {
             int answer;
             Scanner sc = new Scanner(System.in); //getting user's input
             do {
-                System.out.println("Hello dear user, what you would like to do? \n"
+                System.out.println("Hello dear Admin, what you would like to do? \n"
                         + "1) Modify your profile  \n"
                         + "2) See all users in the system  \n"
                         + "3) See all users operations \n"
@@ -57,7 +58,8 @@ public class Admin extends User implements Modify_User {
             } while (answer != 5); //Loop will end when user will type: 5
 
         } catch (Exception ex) {
-
+            System.out.println("Something went wrong!!! Please try again! \n");
+            showAdminFunctions();
         }
     }
 
@@ -66,7 +68,8 @@ public class Admin extends User implements Modify_User {
         String selectQuery = "SELECT `users`.`user_id`, `users`.`username`, `personal_info`.`firstname`, `personal_info`.`secondname`, `personal_info`.`email`, `role`.`role_type`"
                 + "FROM ((`ca_cross`.`users`"
                 + "INNER JOIN `ca_cross`.`personal_info` ON `users`.`user_id` = `personal_info`.`user_id`)"
-                + "INNER JOIN `ca_cross`.`role` ON `users`.`user_id` = `role`.`user_id`);";
+                + "INNER JOIN `ca_cross`.`role` ON `users`.`user_id` = `role`.`user_id`)"
+                + "ORDER BY user_id;";
         Table_Interaction tableint = new Table_Interaction();
 
         ArrayList<String> array; // creating an array list to add all the data here
@@ -94,14 +97,14 @@ public class Admin extends User implements Modify_User {
 
     }
 
-    public void removeUser() {
+    public void removeUser() { // removes the chosen user from database with his data 
         try {
             String query1, query2, query3, query4;
             Scanner sc = new Scanner(System.in);
             Table_Interaction table = new Table_Interaction();
             //initiating table interaction to use one og its templates 
             System.out.println("Which user you would like to delete ? \n");
-            showAll_Users();
+            showAll_Users(); // shows all users with their data and user's user id that we will need to delete that user later
             System.out.println("Please enter user ID of the user that you would like to delete: \n");
             int answer = sc.nextInt();
             sc.nextLine(); // to handle the /n (Enter key) from the buffer
@@ -110,39 +113,41 @@ public class Admin extends User implements Modify_User {
                     + "WHERE `user_id` = " + "'" + answer + "';";
             query2 = "DELETE FROM `ca_cross`.`role`"
                     + "WHERE `user_id` = " + "'" + answer + "';";
-            query3 = "DELETE FROM `ca_cross`.`users`"
+            query3 = "DELETE FROM `ca_cross`.`equations`"
                     + "WHERE `user_id` = " + "'" + answer + "';";
-            query4 = "DELETE FROM `ca_cross`.`equations`"
+            query4 = "DELETE FROM `ca_cross`.`users`"
                     + "WHERE `user_id` = " + "'" + answer + "';";
             table.deleteFromTable(query1); //calling deleteFromTable method and pasting our query to delete data from table
             table.deleteFromTable(query2);
             table.deleteFromTable(query3);
-            table.deleteFromTable(query4); 
+            table.deleteFromTable(query4);
         } catch (Exception e) {
         }
     }
 
-    public void showUsersOperations() {
+    public void showUsersOperations() { //method shows all users operations from equations table 
 
         String selectQuery = "SELECT `users`.`user_id`, `users`.`username`, `personal_info`.`firstname`,"
-                + " `equations`.`equsions_id`, `equations`.`equs_1`, `equations`.`equs_2`,  `equations`.`equs_3`,"
+                + " `equations`.`equations_id`, `equations`.`equs_1`, `equations`.`equs_2`,  `equations`.`equs_3`,"
                 + "`equations`.`det_1`, `equations`.`solution_1`, `equations`.`solution_2`, `equations`.`solution_3`"
                 + "FROM ((`ca_cross`.`users`"
                 + "INNER JOIN `ca_cross`.`equations` ON `users`.`user_id` = `equations`.`user_id`)"
-                + "INNER JOIN `ca_cross`.`personal_info` ON `users`.`user_id` = `personal_info`.`user_id`);";
+                + "INNER JOIN `ca_cross`.`personal_info` ON `users`.`user_id` = `personal_info`.`user_id`)"
+                + "ORDER BY equations_id;";
         Table_Interaction tableint = new Table_Interaction();
-        ArrayList<String> array;  /*gonna save all data in the array list, by using getFromTable() method
+        ArrayList<String> array;
+        /*gonna save all data in the array list, by using getFromTable() method
                                      that's is gonna get multiple data ( not just one string)*/
-        String user_id, username, firstname, equsions_id, equs_1, equs_2, equs_3, det_1, det_2, solution_1, solution_2, solution_3; // 5 values
+        String user_id, username, firstname, equsions_id, equs_1, equs_2, equs_3, det_1, solution_1, solution_2, solution_3; // 5 values
 
         try {
 
-            array = tableint.getFromTable(selectQuery);
-            System.out.println(array.size());
+            array = tableint.getFromTable(selectQuery); // again using getFromTable method to store multiple data from database
             System.out.println(array);
             int j = 0; // index in array
-            for (int i = 0; i < array.size() / 11; i++) {  // 11 colums with values to output all of them in 1 row, we devide array size to 11 ( 11 values) 
 
+            for (int i = 0; i < array.size() / 11; i++) {  // 11 colums with values to output all of them in 1 row, we devide array size to 11 ( 11 values) 
+                //copying the data one by one to our local array
                 user_id = array.get(j++);
                 username = array.get(j++);
                 firstname = array.get(j++);
@@ -154,9 +159,18 @@ public class Admin extends User implements Modify_User {
                 solution_1 = array.get(j++);
                 solution_2 = array.get(j++);
                 solution_3 = array.get(j++);
-                System.out.println(user_id + " " + username + " " + firstname + " \n"
-                        + "equations: \n"
-                        + equsions_id + " " + equs_1 + " " + equs_2 + " " + equs_3 + " " + det_1 + " " + solution_1 + " " + solution_2 + " " + solution_3);
+                System.out.println("USER: \n"
+                        + "user's id: " + user_id + " \n"
+                        + "user full name: " + username + " " + firstname + " \n"
+                        + "EQUATIONS: \n"
+                        + "* equations ID : " + equsions_id + " \n"
+                        + "* first equation: " + equs_1 + " \n"
+                        + "* second equation: " + equs_2 + " \n"
+                        + "* third equation: " + equs_3 + " \n"
+                        + "* determinant 1:  " + det_1 + " \n"
+                        + "* x = " + solution_1 + " \n"
+                        + "* y = " + solution_2 + " \n"
+                        + "* z = " + solution_3 + " \n");
             }
 
             //String table*/

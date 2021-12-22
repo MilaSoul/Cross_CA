@@ -15,30 +15,26 @@ import server_interaction.Table_Interaction;
  *
  * @author milastolbetskaya this code going to sort 2 variable linear equations
  */
-public class Equations_2x2{
+public class Equations_2x2 {
 
-private String[] xy = {"x", "y"};// 
-private int[] var_xy = {0,0,0,0};
-private int[] constant = {0,0};
-private float det;
-private float[] inversA ={0,0,0,0};
-private float[] axb = {0,0};
-private float[] xandy = {0,0};
-private String eq,eq_2;
+    // creating var that we will be needed for the equation
+    private String[] xy = {"x", "y"};
+    private int[] var_xy = {0, 0, 0, 0}; // arrays for storing  x y val
+    private int[] constant = {0, 0}; // arrays for costant
+    private float det; // determinant
+    private float[] inversA = {0, 0, 0, 0}; // arrays for matrix inverse
+    private float[] axb = {0, 0}; // arrays for a and и multiolication
+    private float[] xandy = {0, 0}; // arrays for x and y (for final solution)
+    private String eq, eq_2; // the first and the second equations 
 
-Scanner sc;
-
-
+    Scanner sc;
 
     public Equations_2x2() throws Exception {
         this.sc = new Scanner(System.in);
-solutionSplit();
-       
-       
-       
-      
-    }
+        solutionSplit();
 
+    }
+    //getters and setters for var
     public String getEq() {
         return eq;
     }
@@ -55,7 +51,6 @@ solutionSplit();
         this.eq_2 = eq_2;
     }
 
-
     public float getDet() {
         return det;
     }
@@ -63,7 +58,7 @@ solutionSplit();
     public void setDet(float det) {
         this.det = det;
     }
-        
+
     public String[] getXy() {
         return xy;
     }
@@ -112,104 +107,91 @@ solutionSplit();
         this.xandy = xandz;
     }
 
- 
+    public void solutionSplit() throws Exception {
 
-  
-
-
- 
- public void solutionSplit() throws Exception{
- 
-      System.out.println("Hello! I am offering you to solve 2 matrices linear equation.\n"
+        System.out.println("Hello! I am offering you to solve transformed 2 matrices linear equation.\n"
                 + "2x-3y=2\n"
                 + "3x+8y=3\n"
-                );
-     System.out.println("Please type the first equation\n");
+        );
+        System.out.println("Please type the first equation\n");
 
-      this.setEq(sc.next().toLowerCase().trim().replace(" ",""));
-     //this.setEq("2x-3y=2");
-     
-    String[] x = this.getEq().split("x");
+        this.setEq(sc.nextLine().toLowerCase().trim().replaceAll(" ", "")); // all in lowercase, no spase between
 
-    var_xy[0]=Integer.parseInt(x[0]);
-    
-    String[] y = x[1].split("y");
-    
-    var_xy[1]=Integer.parseInt(y[0]);
-  
-    
-    
-    String[] constant2 = y[1].split("=");
-    
-    constant[0] = Integer.parseInt(constant2[1]);
-    
-    
-       
-     System.out.println("Please type the second equation");
-     this.setEq_2(sc.next().toLowerCase().trim().replace(" ",""));
-     //this.setEq_2("3x+8y=3");
-     
-     String[] x_2 = this.getEq_2().split("x");
-     var_xy[2] = Integer.parseInt(x_2[0]);
-     
-     String[] y_2 = x_2[1].split("y");
-     var_xy[3] = Integer.parseInt(y_2[0]);
-     
-     String[] const_2 = y_2[1].split("=");
-     constant[1]=Integer.parseInt(const_2[1]);
-          
-     det();
-     
-    
- }
- 
- public void det() throws Exception{
-     
-     System.out.println("This is the value for the Determinant|A| :");
+        String[] x = this.getEq().split("x"); //spliting string and get val of x
 
-     this.setDet((this.getVar_xy()[0] * this.getVar_xy()[3]) - (this.getVar_xy()[1] * (this.getVar_xy()[2])));
-     
-     System.out.println(this.getDet());
-     
-     inverseOfA();
-     
-}
- 
- public void inverseOfA() throws Exception{
-   
-     System.out.println("This is the inverse of A:");
-     inversA[0] = this.getVar_xy()[0];
-     inversA[1] = (this.getVar_xy()[1] * -1);
-     inversA[2] = (this.getVar_xy()[2] * -1);
-     inversA[3] = this.getVar_xy()[3];
- 
-   
-     System.out.println(Arrays.toString(this.inversA));
-     inverseAxB();
-}
- 
- public void inverseAxB() throws Exception{
-     System.out.println("This is the solution for Inverse of A x B:");
-     this.axb[0] = (((this.getInversA()[3] * this.getConstant()[0])
-             + (this.getInversA()[1] * this.getConstant()[1])));
-     
-     this.axb[1] = ((this.getInversA()[2] * this.getConstant()[0] )
-             + (this.getInversA()[0] * this.getConstant()[1])); 
-     
-     System.out.println(Arrays.toString(axb));
-     
-     finalSolution();
-     
-     
- }
- 
- public void finalSolution() throws Exception{
-     
-     System.out.println("These are the final values for X and Y:");
- 
- xandy[0] = (1/this.getDet()) * this.getAxb()[0];//
- xandy[1] = (1/this.getDet()) * this.getAxb()[1];
- 
-     System.out.println(Arrays.toString(xandy));
- }
+        var_xy[0] = Integer.parseInt(x[0]); //parsing into integer 
+
+        String[] y = x[1].split("y"); //spliting string and get val of y
+
+        var_xy[1] = Integer.parseInt(y[0]); //parsing into integer 
+
+        String[] constant2 = y[1].split("="); // spliting string and get val of determinant 
+
+        constant[0] = Integer.parseInt(constant2[1]); //parsing into integer
+
+        //the programm will be using arrays by getters to calucalate the equation. 
+        System.out.println("Please type the second equation");
+        this.setEq_2(sc.nextLine().toLowerCase().trim().replaceAll(" ", "")); // all in lowercase, no spase between
+
+        String[] x_2 = this.getEq_2().split("x"); //spliting string and get val of x
+        var_xy[2] = Integer.parseInt(x_2[0]);//parsing into integer
+
+        String[] y_2 = x_2[1].split("y");//spliting string and get val of y
+        var_xy[3] = Integer.parseInt(y_2[0]);//parsing into integer
+
+        String[] const_2 = y_2[1].split("="); // spliting string and get val of determinant
+        constant[1] = Integer.parseInt(const_2[1]);//parsing into integer
+
+        det(); // calling determinant
+
+    }
+
+    public void det() throws Exception {
+
+        System.out.println("This is the value for the Determinant|A| :");
+        //calculating values for determinant
+        this.setDet((this.getVar_xy()[0] * this.getVar_xy()[3]) - (this.getVar_xy()[1] * (this.getVar_xy()[2])));
+
+        System.out.println(this.getDet());
+
+        inverseOfA(); // calling inverse of A
+
+    }
+
+    public void inverseOfA() throws Exception {
+
+        System.out.println("This is the inverse of A:");
+        inversA[0] = this.getVar_xy()[0];
+        inversA[1] = (this.getVar_xy()[1] * -1); //converting into oposite val
+        inversA[2] = (this.getVar_xy()[2] * -1); //converting into oposite val
+        inversA[3] = this.getVar_xy()[3];
+
+        System.out.println(Arrays.toString(this.inversA));
+        inverseAxB(); //calling inverse of AxB
+    }
+
+    public void inverseAxB() throws Exception {
+        //multiplication AxB
+        System.out.println("This is the solution for Inverse of A x B:");
+        this.axb[0] = (((this.getInversA()[3] * this.getConstant()[0])
+                + (this.getInversA()[1] * this.getConstant()[1])));
+
+        this.axb[1] = ((this.getInversA()[2] * this.getConstant()[0])
+                + (this.getInversA()[0] * this.getConstant()[1]));
+
+        System.out.println(Arrays.toString(axb));//printing arrays
+
+        finalSolution(); //calling solution 
+
+    }
+
+    public void finalSolution() throws Exception {
+
+        System.out.println("These are the final values for X and Y:");
+        //multiplication | det x (AxB)|
+        xandy[0] = (1 / this.getDet()) * this.getAxb()[0];//solution for x
+        xandy[1] = (1 / this.getDet()) * this.getAxb()[1];//solution for y
+
+        System.out.println(Arrays.toString(xandy));// printing arrays  
+    }
 }

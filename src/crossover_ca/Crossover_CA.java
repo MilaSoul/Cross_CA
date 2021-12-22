@@ -17,14 +17,15 @@ import server_interaction.Validation;
 public class Crossover_CA {
 
     /**
+     * 
      * @param args the command line arguments
      * @throws java.lang.Exception
      */
     public static void main(String[] args) throws Exception {
         // TODO code application logic here
 
-        Log_IN login = new Log_IN();
-        login.StartupMenu();
+        Log_IN login = new Log_IN(); //initiating the Log_IN object( it is already with the database
+        login.StartupMenu(); //calling startup menu to star our program 
         
        
     }

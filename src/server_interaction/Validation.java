@@ -4,9 +4,10 @@
  */
 package server_interaction;
 
-/**
+/**Validation class contains methods to validate user's input like username and etc.
  *
- * @author adminBeka
+ * @author Bekezhan Abdykarimov
+ * @author Liudmila Stolbetskaia
  */
 public class Validation {
     

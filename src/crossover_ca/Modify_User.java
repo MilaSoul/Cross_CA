@@ -10,13 +10,16 @@ import server_interaction.Table_Interaction;
 import server_interaction.Validation;
 
 /**
+ * Interface that contains default methods that won't be overwritten in the implementing classes 
+ * because these methods are default we can write them here (one of the latest java features) 
  *
- * @author adminBeka
+ * @author Bekezhan Abdykarimov 
  * @author Liudmila Stolbetskaia
  */
 public interface Modify_User {
 
-    public default void modifyProfile(int user_id) {
+    //method shows us all available methods to update a certain data 
+    public default void modifyProfile(int user_id) { 
 
         Scanner scan = new Scanner(System.in);
         int i;
@@ -67,9 +70,10 @@ public interface Modify_User {
                         System.out.println("try again");
                 }
             } while (i != 6);
-      
+
         } catch (RuntimeException NException) {
-            System.out.println("error");
+            System.out.println("error while we were modifying your accout! \n"
+                    + " Try again please! \n");
         }
     }
 
@@ -82,24 +86,26 @@ public interface Modify_User {
         String newUsername = scan.nextLine();
 
         String where, updateQuery;
-        Validation v = new Validation();
-        boolean validUsername = v.isUsernameValid(newUsername);
+        Validation v = new Validation(); // initiating validation, we will use it to validate user's input 
+        boolean validUsername = v.isUsernameValid(newUsername); //checking if it is valid
 
-        if (validUsername) {
+        if (validUsername) {// if it is valid, this code block will update it in database, 
+                                  //by using templete method tableUpdate() in Table Interaction class
             where = Integer.toString(user_id);
             updateQuery = "UPDATE `ca_cross`.`users`"
                     + "SET `username` = ?"
                     + "WHERE `user_id` = ?";
-
+            
             ti.tableUpdate(updateQuery, newUsername, where);
             System.out.println("Updated! Your username: " + newUsername);
 
-        } else {
+        } else {//will run this method again if user input isn't valid 
             System.out.println("wrong, username is not valid, do it again!");
-            usernameUpdate(user_id);
+            usernameUpdate(user_id);// calling this method again only if input isn't valid
         }
     }
-
+   //Basically the whole logic in the next methods is the same 
+   // checking the input, if it is valid or not,  and inserting it to the table, if it is.
     public default void passwordUpdate(int user_id) {
 
         Table_Interaction ti = new Table_Interaction();
