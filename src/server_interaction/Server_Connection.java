@@ -59,7 +59,7 @@ public class Server_Connection {
         } catch (Exception var9) {
             System.out.println(var9);
         }
-        System.out.println("Connected!");
+       // System.out.println("Connected!");
         return conn;
       
         

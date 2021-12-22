@@ -15,90 +15,94 @@ import java.util.logging.Logger;
 import server_interaction.Table_Interaction;
 
 import server_interaction.Server_Connection;
+import server_interaction.Validation;
 
 /**
  *
  * @author adminBeka
  */
-public class User_Authentication {
+public class Log_IN {
 
     private Server_Connection ca;
 
-    public User_Authentication() {
+    public Log_IN() {
         this.ca = new Server_Connection();
     }
 
-    public User_Authentication(Server_Connection ca) {
+    public Log_IN(Server_Connection ca) {
         this.ca = ca;
     }
 
-    public void AdminOrUser(int user_id) {
+    public void StartupMenu() throws SQLException, ClassNotFoundException {
 
-        if (user_id == 1) {
-            
-            Admin admin = null;
-            admin = CreateUser();
-            admin.showAdminFunctions();
-        } else{
-
-            RegularUser rUser = null;
-            rUser = CreateUser(user_id);
-            rUser.showUserFunctions();
+        int answer;
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Hello \n"
+                + "1) Log-up \n"
+                + "2) Log-in \n"
+                + " Enter 1 if you do not have an accaunt \n"
+                + " Enter 2 if you have an account \n");
+        answer = scan.nextInt();
+        scan.nextLine(); // to handle the /n (enterkey)
+        if (answer == 1) {
+            Logup();
+            Login();
+        } else if (answer == 2) {
+            Login();
         }
+
     }
 
-    public void UserLogin() throws SQLException,
+    public void Login() throws SQLException,
             ClassNotFoundException {
 
         Scanner scan = new Scanner(System.in);
+        //getting username and password
         System.out.println("Hello \n"
-                + "Please enter your username:");
+                + "Please enter your username: \n");
         String username = scan.next();
-        System.out.println("Please enter your password:");
+        System.out.println("Please enter your password: \n");
         String password = scan.next();
 
         int user_id;
-        String userType, usernameC, passwordC; // C = stand for Checked
+        String usernameC, passwordC; // C = stand for Checked
         try {
 
-            Connection con = ca.connectToTheServer();
+            Connection con = ca.connectToTheServer();   // Connecting to a server by using Server_connection class
 
             PreparedStatement stm = con.prepareStatement("SELECT user_id, username, password FROM users WHERE username = ? AND password = ?");
             stm.setString(1, username);
             stm.setString(2, password);
 
-            ResultSet result = stm.executeQuery();
-            if (result.next()) {
-                System.out.println("User is in the table");
-                user_id = result.getInt("user_id");
-                usernameC = result.getString("username");
-                passwordC = result.getString("password");
-                System.out.println(user_id + " " + usernameC + " " + passwordC);
-                AdminOrUser(user_id);
-               /* if (user_id == 1) {
+            ResultSet result = stm.executeQuery(); //executing a statement
+            if (result.next()) { //will execute if there is will be a result from the query
 
-                    userType = "admin";
-                    return user_id;
-                    /* Admin admin = null;
+                System.out.println(" \n User " + username + " is in the table \n");
+                user_id = result.getInt("user_id");
+
+                /* if user ID is equal to 1, it will create the admin,
+                if it is not 1, then it will initiate regular user 
+                 */
+                if (user_id == 1) {
+
+                    Admin admin;
                     admin = CreateUser();
-                    admin.modifyProfile(user_id);
+                    /*CreateUser() methods are getting data from DB and putting them
+                                           into the constructor to and return ready user or admin with data that maches with the username and password*/
+                    admin.showAdminFunctions();  // Showing what admin can do
                 } else {
 
-                    userType = "user";
-                    return user_id;
-                    /* rUser = new RegularUser();
+                    RegularUser rUser;
                     rUser = CreateUser(user_id);
-                 //   rUser.modifyProfile(user_id);
-                  //  rUser.solveEquation2x2();
-                    rUser.solveEquation3x3();
-                }*/
+                    rUser.showUserFunctions();
+                }
                 // this.setUser_id(result.getInt("user_id"));
             } else {
                 System.out.println("User not found, wrong name or password");
-                UserLogin();
+                Login();
             }
 
-            con.close();
+            con.close();// closing connection, prepared statement and result set
             stm.close();
             result.close();
 
@@ -115,19 +119,80 @@ public class User_Authentication {
         } catch (Exception var9) {
             System.out.println(var9);
         }
-       // return -1;
-
-        //solveEquation3x3();
     }
 
+    public void Logup() throws ClassNotFoundException {
+        
+        String username, password, firstname, secondname, email;
+        boolean validUsername, validPassword, validFirstname, validSecondname, validEmail;
+        Validation v = new Validation();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Would you like to register as a user?");
+
+        do {
+            System.out.println("Type your username");
+            username = sc.nextLine();
+            validUsername = v.isUsernameValid(username);
+            System.out.println(validUsername);
+
+            System.out.println("Type your password:");
+            password = sc.nextLine();
+            validPassword = v.isValidPassword(password);
+            System.out.println(validPassword);
+
+        } while (validPassword != true || validUsername != true); // Will run the loop until username and password won't be valid
+
+        int user_id;
+     //  String user_id;
+
+        String usersT = "users";
+        String whatToInsert = "username, password";
+        Table_Interaction table = new Table_Interaction();
+        table.insertTo_Table(usersT, whatToInsert, username, password);
+        user_id = table.selectUser_ID(username);
+        System.out.println(user_id);
+        System.out.println("Username and Password Created! \n"
+                + "Please add your personal information: \n");
+
+        do {
+            System.out.println("Type your firstname: \n");
+            firstname = sc.nextLine();
+            validFirstname = v.isNameValid(firstname);
+
+        } while (validFirstname != true);
+
+        do {
+            System.out.println("Type your secondname: \n");
+            secondname = sc.nextLine();
+            validSecondname = v.isNameValid(secondname);
+
+        } while (validSecondname != true);
+
+        do {
+            System.out.println("Type your email: \n");
+            email = sc.nextLine();
+            validEmail = v.isEmailValid(email);
+
+        } while (validEmail != true);
+
+        String piT = "personal_info";
+        whatToInsert = "firstname, secondname, email, user_id";
+ 
+        String ID = Integer.toString(user_id);
+        table.insertTo_Table(piT, whatToInsert, firstname, secondname, email, ID);
+        table.insertTo_Table("role", "role_type, user_id", "user", ID);
+        System.out.println("Registration complite!");
+
+         }
     public Admin CreateUser() {
+        //method is basically just puts the data from DataBase to the Admin constructor 
 
         String selectQuery = "SELECT `users`.`user_id`, `users`.`username`, `users`.`password`, `personal_info`.`firstname`, `personal_info`.`secondname`, `personal_info`.`email`, `role`.`role_type`"
                 + "FROM ((`ca_cross`.`users`"
                 + "INNER JOIN `ca_cross`.`personal_info` ON `users`.`user_id` = `personal_info`.`user_id`)"
                 + "INNER JOIN `ca_cross`.`role` ON `users`.`user_id` = `role`.`user_id`)"
                 + "WHERE `ca_cross`.`users`.`user_id` = '1';";
-        Table_Interaction tableint = new Table_Interaction();
+        Table_Interaction tableint = new Table_Interaction(); //calling table interaction class with the templates to interact with the table
         ArrayList array;
         int user_id;
         String username, password, firstname, secondname, email, role; // 5 values
@@ -143,7 +208,7 @@ public class User_Authentication {
             secondname = array.get(++j).toString();
             email = array.get(++j).toString();
             role = array.get(++j).toString();
-            System.out.println(user_id + " " + username + " " + firstname + " " + secondname + " " + email + " " + role);
+            // System.out.println(user_id + " " + username + " " + firstname + " " + secondname + " " + email + " " + role);
             Admin admin = new Admin(user_id, username, password, firstname, secondname, email, role);
             return admin;
             //String table*/
@@ -176,7 +241,7 @@ public class User_Authentication {
             secondname = array.get(++j).toString();
             email = array.get(++j).toString();
             role = array.get(++j).toString();
-            System.out.println(user_id + " " + username + " " + firstname + " " + secondname + " " + email + " " + role);
+            //  System.out.println(user_id + " " + username + " " + firstname + " " + secondname + " " + email + " " + role);
             RegularUser rUser = new RegularUser(user_id, username, password, firstname, secondname, email, role);
             return rUser;
             //String table*/
@@ -186,35 +251,5 @@ public class User_Authentication {
         return null;
 
     }
-    /*public void Authentication(){
-        
-        boolean valid;
-        String username, password;
-        UsersTable usersT = new UsersTable();
-        
-        do{
-            try {
-                Scanner input = new Scanner(System.in);
-                System.out.println("Please enter your username");
-                valid = true;
-                username = input.nextLine();
-
-                System.out.println("Please enter your password");
-                password = input.nextLine();
-                String usernameDB = usersT.selectUsername(username);
-                String passwordDB = usersT.selectPassword(password);
-                if (username.equals(usernameDB) && password.equals(passwordDB)) {
-                    System.out.println("The access is proved");
-                } else {
-                    System.out.println("the access id denied");
-                    valid = false;
-                }
-            }catch(Exception e){
-                System.out.println("The password is invalid");
-                valid = false;
-
-            }
-        }while (!valid);
-    }    */
 
 }

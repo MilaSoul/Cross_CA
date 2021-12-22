@@ -17,6 +17,7 @@ import server_interaction.Table_Interaction;
 import server_interaction.Validation;
 import equations.Equations_2x2;
 import equations.Equation_3x3;
+import java.sql.SQLException;
 
 /**
  *
@@ -44,10 +45,10 @@ public class RegularUser extends User implements Interface_RegUser, Modify_User 
             Scanner sc = new Scanner(System.in);
             do {
                 System.out.println("Hello dear user, what you would like to do? \n"
-                        + "1) Modify your profile"
-                        + "2) Solve 2x2 Equations"
-                        + "3) Solve 3x3 Equations"
-                        + "4) Exit"
+                        + "1) Modify your profile \n"
+                        + "2) Solve 2x2 Equations \n"
+                        + "3) Solve 3x3 Equations \n"
+                        + "4) Exit \n"
                         + "Please type your answer: \n");
 
                 answer = sc.nextInt();
@@ -66,95 +67,6 @@ public class RegularUser extends User implements Interface_RegUser, Modify_User 
 
         } catch (Exception ex) {
 
-        }
-    }
-
-    public void UserRegistration() throws Exception {
-
-        try {
-            String username, password, firstname, secondname, email;
-            boolean validUsername, validPassword, validFirstname, validSecondname, validEmail;
-            Validation v = new Validation();
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Would you like to register as a user?");
-
-            do {
-                System.out.println("Type your username");
-                username = sc.next();
-                validUsername = v.isUsernameValid(username);
-
-                System.out.println("Type your password:");
-                password = sc.next();
-                validPassword = v.isValidPassword(password);
-            } while (validUsername && validPassword);
-
-            do {
-                System.out.println("Type your firstname");
-                firstname = sc.next();
-                validFirstname = v.isFirstNameValid(firstname);
-
-                System.out.println("Type your secondname");
-                secondname = sc.next();
-                validSecondname = v.isSecondNameValid(secondname);
-
-                System.out.println("Type your email:");
-                email = sc.next();
-                validEmail = v.isEmailValid(email);
-
-            } while (validFirstname && validSecondname && validEmail);
-
-            int user_id = 0;
-
-            //  System.out.println("Type your id");
-            //  int user_id = sc.nextInt();
-//            // wheb I update the first table it has to get the user_id and 
-//            
-//          
-            Connection con = ca.connectToTheServer();
-
-            PreparedStatement stm_2 = con.prepareStatement("INSERT INTO users (username, password)" + " VALUES (?, ?)");
-            stm_2.setString(1, username);
-            stm_2.setString(2, password);
-
-            stm_2.executeUpdate();
-
-            PreparedStatement stm_3 = con.prepareStatement("SELECT user_id FROM users WHERE username = '" + username + "' AND password = '" + password + "'");
-            ResultSet result = stm_3.executeQuery();
-
-            while (result.next()) {
-                user_id = (result.getInt("user_id"));
-
-                //System.out.println(user_id);
-            }
-
-            //     INSERT INTO personal_info (user_id)   SELECT user_id FROM users ;                              
-            PreparedStatement stm = con.prepareStatement("INSERT INTO personal_info (firstname, secondname, email, user_id)" + "VALUES (?, ?, ?, ?)");
-            stm.setString(1, firstname);
-            stm.setString(2, secondname);
-            stm.setString(3, email);
-            stm.setInt(4, user_id);
-
-            stm.executeUpdate();
-
-            PreparedStatement stm_4 = con.prepareStatement("INSERT INTO role (role_type, user_id)" + "VALUES (?, ?)");
-            stm.setString(1, "regular user");
-            stm.setInt(2, user_id);
-
-            stm.executeUpdate();
-
-            // ResultSet result = stm.executeQuery();
-            //display(result);
-            //user registration 
-            System.out.println("The registration has completed =)");
-
-            stm.close();
-            con.close();
-            result.close();
-            stm_2.close();
-            stm_3.close();
-            stm_4.close();
-
-        } catch (Exception e) {
         }
     }
 
@@ -179,7 +91,7 @@ public class RegularUser extends User implements Interface_RegUser, Modify_User 
             con.close();
             p.close();
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
 
     }
@@ -206,7 +118,7 @@ public class RegularUser extends User implements Interface_RegUser, Modify_User 
             con.close();
             p.close();
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
 
     }

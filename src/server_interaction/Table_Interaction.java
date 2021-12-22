@@ -31,26 +31,21 @@ public class Table_Interaction {
         this.ca = ca;
     }
 
-    public String selectFromTable(String select, String from, String where, String condition) throws SQLException {
-
+     public String selectFromTable(String selectQuery, String value){
+        
         String selectedValue = null;
         try {
-            Connection conn = ca.connectToTheServer();
-            // create a java mysql database connection
+            Connection con = ca.connectToTheServer();
 
-            String selectQuery = "SELECT " + select + " \n"
-                    + "FROM " + from + " \n"
-                    + "WHERE " + where + " = ?";
-            PreparedStatement statement = conn.prepareStatement(selectQuery);
-            statement.setString(1, condition);
+            PreparedStatement stm = con.prepareStatement(selectQuery);
+            ResultSet result = stm.executeQuery();
 
-            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                selectedValue = (result.getString(value));
 
-            if (result.next()) {
-                selectedValue = result.getString(where);
+                //System.out.println(user_id);
             }
-
-            conn.close();
+            con.close();
             return selectedValue;
         } catch (SQLException var8) {
             SQLException se = var8;
@@ -107,16 +102,16 @@ public class Table_Interaction {
 
             ResultSet rs = stmt.executeQuery(query);
 
-            ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
+            ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData(); // getting the number of columns in the table 
             int numberOfColumn = rsmd.getColumnCount();
-            //       System.out.println(numberOfColumn);
+            // System.out.println(numberOfColumn);
 
             while (rs.next()) { //will run the loop until as long as there is a result coming 
 
                 for (int column = 1; column <= numberOfColumn; column++) { //will add the values from columns one by one 
                     if (rs.wasNull()) {
-                            array.add((String) rs.getObject(column));
-                       //   array.add("null");
+                        array.add((String) rs.getObject(column));
+                        //   array.add("null");
                     } else {
                         array.add(rs.getString(column));
                     }
@@ -126,7 +121,6 @@ public class Table_Interaction {
             conn.close();
             stmt.close();
             rs.close();
-            System.out.println(array);
             return array;
             // closening writing to the file 
 
@@ -146,46 +140,69 @@ public class Table_Interaction {
         return null;
     }
 
-    public void postTo_Table(String insertQuery) {
-
+    public void insertTo_Table(String tableName, String whatToInsert, String value1, String value2, String value3, String value4) {
         try {
-            Connection conn = ca.connectToTheServer();
-            Statement posted = conn.createStatement();
+            Connection con = ca.connectToTheServer();
 
-            posted.executeUpdate(insertQuery);
+            PreparedStatement stm = con.prepareStatement("INSERT INTO " + tableName + " (" + whatToInsert + ")" + " VALUES (?, ?, ?, ?);");
+            stm.setString(1, value1);
+            stm.setString(2, value2);
+            stm.setString(3, value3);
+            stm.setString(4, value4);
 
-            conn.close();
+            stm.executeUpdate();
             System.out.println("Insert Complited!");
-        } catch (Exception e) {
+
+            stm.close();
+            con.close();
+
+        } catch (SQLException e) {
             System.err.println("e");
             System.err.println(e.getMessage());
         }
     }
 
-    public String selectUser_ID(String username) throws SQLException {
-        String select = "user_id";
-        String from = "users";
-        String where = "username";
-        String value = "user_id";
+    public void insertTo_Table(String tableName, String whatToInsert, String value1, String value2) {
         try {
-            String user_id = selectFromTable(select, from, where, username);
-            return user_id;
-        } catch (SQLException var8) {
-            SQLException se = var8;
-            System.out.println("SQL Exception:");
+            Connection con = ca.connectToTheServer();
 
-            while (se != null) {
-                System.out.println("State  : " + se.getSQLState());
-                System.out.println("Message: " + se.getMessage());
-                System.out.println("Error  : " + se.getErrorCode());
-                se = se.getNextException();
-            }
-        } catch (Exception var9) {
-            System.out.println(var9);
+            PreparedStatement stm = con.prepareStatement("INSERT INTO " + tableName + " (" + whatToInsert + ")" + " VALUES (?, ?);");
+            stm.setString(1, value1);
+            stm.setString(2, value2);
+
+            stm.executeUpdate();
+            System.out.println("Insert Complited!");
+
+            stm.close();
+            con.close();
+
+        } catch (SQLException e) {
+            System.err.println("e");
+            System.err.println(e.getMessage());
         }
-        return null;
     }
 
+    public int selectUser_ID(String username) {
+
+        int user_id = 0;
+        try {
+            Connection con = ca.connectToTheServer();
+
+            PreparedStatement stm_3 = con.prepareStatement("SELECT user_id FROM users WHERE username = '" + username + "'");
+            ResultSet result = stm_3.executeQuery();
+
+            while (result.next()) {
+                user_id = (result.getInt("user_id"));
+
+                //System.out.println(user_id);
+            }
+            return user_id;
+        } catch (Exception e) {
+        }
+        return -1;
+    }
+
+    
     public void deleteFromTable(String query) {
         Connection conn = ca.connectToTheServer();
         Statement stmt = null;

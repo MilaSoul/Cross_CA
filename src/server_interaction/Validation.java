@@ -9,8 +9,11 @@ package server_interaction;
  * @author adminBeka
  */
 public class Validation {
+    
+    public Validation(){
+};
 
-public boolean isUsernameValid(String username) {
+    public boolean isUsernameValid(String username) {
         boolean isValid = true;
         if (username == null) {
             isValid = false;
@@ -36,13 +39,16 @@ public boolean isUsernameValid(String username) {
         }
         return isValid;
     }
-public boolean isFirstNameValid(String firstname) {
-        return firstname.matches("[A-Z][a-z]*");
-    }
-    // validate last name
 
-    public boolean isSecondNameValid(String secondName) {
-        return secondName.matches("[A-Z][a-z]*");
+    public boolean isNameValid(String name) {
+        boolean isValid = true;
+        String letters = "[A-Z][a-z]*";
+        String numbers = "[0-9]+";
+        if (!name.matches(letters) || name.matches(numbers)) {
+            System.out.println("Name shouldn't contain numbers");
+            isValid = false;
+        }
+        return isValid;
     }
 
     public boolean isEmailValid(String email) {
@@ -53,5 +59,5 @@ public boolean isFirstNameValid(String firstname) {
         }
         return email.matches(regex);
     }
-    
+
 }

@@ -21,7 +21,6 @@ public interface Modify_User {
         Scanner scan = new Scanner(System.in);
         int i;
         int id = user_id;
-        System.out.println(user_id);
         try {
             do {
 
@@ -33,59 +32,44 @@ public interface Modify_User {
                         + "5)email \n"
                         + "6)go back");
 
-                //    if (scan.hasNextInt()) {
-                //  i = in.read();
-                System.out.println("before scanner");
                 i = scan.nextInt();
-                System.out.println("after scanner");
+                scan.nextLine(); // after getting the int input, avoiding the error by adding nextLine()
 
-                // scan.nextLine(); // after getting the int input, avoiding the error by adding nextLine()
                 switch (i) {
                     case 1:
 
                         usernameUpdate(id);
-                        System.out.println("1");
                         break;
 
                     case 2:
 
                         passwordUpdate(id);
-                        System.out.println("2");
                         break;
 
                     case 3:
 
                         firstnameUpdate(id);
-                        System.out.println("3");
                         break;
 
                     case 4:
 
                         secondnameUpdate(id);
-                        System.out.println("4");
                         break;
 
                     case 5:
                         emailUpdate(id);
-                        System.out.println("4");
                         break;
                     case 6:
-                        System.out.println("exit");
                         break;
 
                     default:
 
                         System.out.println("try again");
                 }
-                scan.nextLine();
-                System.out.println(i);
-                System.out.println("loop");
-                //    }
             } while (i != 6);
-          //  scan.close();
+      
         } catch (RuntimeException NException) {
             System.out.println("error");
-            //modifyProfile();
         }
     }
 
@@ -152,7 +136,7 @@ public interface Modify_User {
 
         String where, updateQuery;
         Validation v = new Validation();
-        boolean nameValid = v.isFirstNameValid(newFirstname);
+        boolean nameValid = v.isNameValid(newFirstname);
         if (nameValid) {
 
             where = Integer.toString(user_id);
@@ -176,7 +160,7 @@ public interface Modify_User {
 
         String where, updateQuery;
         Validation v = new Validation();
-        boolean nameValid = v.isSecondNameValid(newSecondName);
+        boolean nameValid = v.isNameValid(newSecondName);
         if (nameValid) {
 
             where = Integer.toString(user_id);
